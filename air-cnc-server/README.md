@@ -97,3 +97,18 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+
+# Init
+
+`nest new air-cnc-server`
+
+`nest generate library common`
+
+`pnpm i @nestjs/mongoose mongoose`
+
+`pnpm i @nestjs/config`
+
+`nest g module database -p common`
+
+`nest g module config -p common`
