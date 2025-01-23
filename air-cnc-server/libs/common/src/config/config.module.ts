@@ -5,7 +5,14 @@ import {
 } from '@nestjs/config';
 import { z } from 'zod';
 
+/**
+ * Regular expression to validate MongoDB URI strings.
+ */
 const mongoDbUriRegex = /^(mongodb(?:\+srv)?):\/\//;
+
+/**
+ * Zod schema for validating the database environment variables.
+ */
 const dbEnvSchema = z.object({
   MONGODB_URI: z
     .string()
@@ -15,6 +22,10 @@ const dbEnvSchema = z.object({
     ),
 });
 
+/**
+ * Configuration module for handling environment variables and validation.
+ * Uses Zod for schema validation of the MONGODB_URI.
+ */
 @Module({
   imports: [
     NestConfigModule.forRoot({
