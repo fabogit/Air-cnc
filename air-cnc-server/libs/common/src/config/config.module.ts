@@ -3,14 +3,35 @@ import {
   ConfigService,
   ConfigModule as NestConfigModule,
 } from '@nestjs/config';
-import * as Joi from 'joi';
+import { z } from 'zod';
+
+const mongoDbUriRegex = /^(mongodb(?:\+srv)?):\/\//;
+const dbEnvSchema = z.object({
+  MONGODB_URI: z
+    .string()
+    .regex(
+      mongoDbUriRegex,
+      'MONGODB_URI require a valid mongo db connection string ',
+    ),
+});
 
 @Module({
   imports: [
     NestConfigModule.forRoot({
-      validationSchema: Joi.object({
-        MONGODB_URI: Joi.string().required(),
-      }),
+      validate: (config) => {
+        try {
+          return dbEnvSchema.parse(config);
+        } catch (error) {
+          if (error instanceof z.ZodError) {
+            const formattedErrors = error.errors
+              .map((err) => `${err.path.join('.')} : ${err.message}`)
+              .join('\n');
+
+            throw new Error(`Config validation failed:\n${formattedErrors}`);
+          }
+          throw error;
+        }
+      },
     }),
   ],
   providers: [ConfigService],
