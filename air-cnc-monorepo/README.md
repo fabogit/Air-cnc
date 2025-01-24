@@ -114,3 +114,5 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 `nest g module config -p common`
 
 `nest g app reservations`
+
+`nest g module logger`
