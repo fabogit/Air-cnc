@@ -115,4 +115,10 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 `nest g app reservations`
 
-`nest g module logger`
+`nest g module logger` @common
+
+`nest g app auth`
+
+`nest g module users` @auth
+
+`nest g controller users` @auth

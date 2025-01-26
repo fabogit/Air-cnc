@@ -9,7 +9,7 @@
     "build": "nest build",
     "dc:up": "docker compose up",
     "dc:stop": "docker compose stop",
-    "dc:down": "docker compose down -v",
+    "dc:down": "docker compose down",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
