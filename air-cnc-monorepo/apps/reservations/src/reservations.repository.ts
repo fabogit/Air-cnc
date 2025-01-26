@@ -5,8 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 /**
- * Reservation repository implementation extending the AbstractRepository.
- * Provides CRUD operations specifically for Reservation documents.
+ * Reservation repository implementation extending the `AbstractRepository`.
+ * Provides CRUD operations specifically for `Reservation` documents.
  */
 @Injectable()
 export class ReservationsRepository extends AbstractRepository<ReservationDocument> {

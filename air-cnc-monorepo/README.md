@@ -122,3 +122,7 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 `nest g module users` @auth
 
 `nest g controller users` @auth
+
+`nest g service users` @auth
+
+`pnpm run start:dev auth` just starts auth app

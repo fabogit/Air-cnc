@@ -5,12 +5,10 @@ import { Type } from 'class-transformer';
  * Data Transfer Object (DTO) for creating a new reservation.
  * This DTO is used to validate and transfer data from the client
  * when creating a new reservation in the system.
- *
- * Contains properties for:
- * - `startDate`: The start date of the reservation.
- * - `endDate`: The end date of the reservation.
- * - `placeId`: The ID of the place being reserved.
- * - `invoiceId`: The ID of the associated invoice.
+ * @property startDate: The start date of the reservation.
+ * @property endDate: The end date of the reservation.
+ * @property placeId: The ID of the place being reserved.
+ * @property invoiceId: The ID of the associated invoice.
  */
 export class CreateReservationDto {
   /**

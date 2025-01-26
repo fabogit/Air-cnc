@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDocument } from '@app/common/database/abstract.schema';
 
 /**
- * Mongoose schema for the Reservation document.
+ * Mongoose schema for the `Reservation` document.
  * Inherits from AbstractDocument and includes properties for reservation details.
  */
 @Schema({ versionKey: false })
@@ -45,7 +45,7 @@ export class ReservationDocument extends AbstractDocument {
 }
 
 /**
- * The compiled Mongoose schema for the Reservation document.
+ * The compiled Mongoose schema for the `Reservation` document.
  */
 export const ReservationSchema =
   SchemaFactory.createForClass(ReservationDocument);
