@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './auth.module';
-import { Logger } from 'nestjs-pino';
 import { ValidationPipe, Logger as NestLogger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Logger } from 'nestjs-pino';
+import { AuthModule } from './auth.module';
 
 async function bootstrap() {
   const logger = new NestLogger('Bootstrap', { timestamp: true });
-
   const app = await NestFactory.create(AuthModule, {
     bufferLogs: true,
   });
@@ -17,8 +17,8 @@ async function bootstrap() {
   );
 
   app.useLogger(app.get(Logger));
-
-  const port = process.env.port ?? 3001;
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT') as number;
   await app.listen(port, () => logger.log(`Auth running on port:${port}`));
 }
 

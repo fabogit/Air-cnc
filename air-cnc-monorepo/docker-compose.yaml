@@ -1,5 +1,5 @@
 include:
-  - docker-compose-mongo.yaml
+  - ./docker/docker-compose-mongo.yaml
 
 services:
   reservations:
@@ -10,7 +10,7 @@ services:
       target: development
     command: pnpm run start:dev reservations
     env_file:
-      - ./app/reservations/.env
+      - ./apps/reservations/.env.reservations
     depends_on:
       - mongodb
     ports:
@@ -26,7 +26,7 @@ services:
       target: development
     command: pnpm run start:dev auth
     env_file:
-      - ./app/auth/.env
+      - ./apps/auth/.env.auth
     depends_on:
       - mongodb
     ports:

@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger as NestLogger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Logger } from 'nestjs-pino';
 import { ReservationsModule } from './reservations.module';
 
@@ -16,8 +17,8 @@ async function bootstrap() {
   );
 
   app.useLogger(app.get(Logger));
-
-  const port = process.env.port ?? 3000;
+  const configService = app.get(ConfigService);
+  const port = configService.get('PORT') as number;
   await app.listen(port, () =>
     logger.log(`Reservations running on port:${port}`),
   );
