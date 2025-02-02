@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from '@app/common';
 import { validateAuthEnv } from './auth.env-validation';
+import { LocalStrategy } from './strategy/local.strategy';
 
 /**
  * Module for handling authentication-related functionality.
@@ -40,6 +41,6 @@ import { validateAuthEnv } from './auth.env-validation';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, LocalStrategy],
 })
 export class AuthModule {}
