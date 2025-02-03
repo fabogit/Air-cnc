@@ -1,51 +1,55 @@
-import { z } from 'zod';
+import { plainToInstance } from 'class-transformer';
+import {
+  IsNumber,
+  IsString,
+  Matches,
+  Max,
+  Min,
+  validateSync,
+} from 'class-validator';
 
 /**
- * Regular expression to validate MongoDB URI strings.
+ * Class representing environment variables for reservations.
+ * This class defines and validates the required environment variables.
  */
-const mongoDbUriRegex = /^(mongodb(?:\+srv)?):\/\//;
+class EnvironmentVariables {
+  /**
+   * The MongoDB connection URI.
+   * Must be a valid MongoDB connection string.
+   */
+  @Matches(/^(mongodb(?:\+srv)?):\/\//, {
+    message: 'MONGODB_URI require a valid mongo db connection string',
+  })
+  @IsString()
+  MONGODB_URI: string;
+
+  /**
+   * The port number the application listens on.
+   * Must be a number between 1 and 65535.
+   */
+  @IsNumber({ allowNaN: false }, { message: 'PORT must be a number' })
+  @Min(1, { message: 'PORT must be at least 1' })
+  @Max(65535, { message: 'PORT must be at most 65535' })
+  PORT: number;
+}
 
 /**
- * Zod schema for validating the reservation environment variables.
- * This schema ensures that the `MONGODB_URI` is a valid MongoDB connection string
- * and the `PORT` is a valid number between 1 and 65535.
+ * Validates the reservations environment variables.
+ * Class transformer will try to convert properties implicitly to their target type based on their typing information.
+ * @param config The configuration object containing the environment variables.
+ * @returns The validated EnvironmentVariables object.
+ * @throws {Error} If any of the environment variables are invalid.
  */
-const reservationsEnvSchema = z.object({
-  MONGODB_URI: z
-    .string()
-    .regex(
-      mongoDbUriRegex,
-      'MONGODB_URI require a valid mongo db connection string ',
-    ),
-  PORT: z.string().transform((val) => {
-    const port = Number(val);
-    if (isNaN(port) || port < 1 || port > 65535) {
-      throw new Error('PORT must be a valid number between 1 and 65535');
-    }
-    return port;
-  }),
-});
+export function validateReservationsEnv(config: Record<string, unknown>) {
+  const validatedConfig = plainToInstance(EnvironmentVariables, config, {
+    enableImplicitConversion: true,
+  });
+  const errors = validateSync(validatedConfig, {
+    skipMissingProperties: false,
+  });
 
-/**
- * Validates the provided reservation environment configuration.
- *
- * This function uses the `reservationsEnvSchema` to validate the configuration object.
- * It throws a detailed error message if the validation fails, including the specific errors encountered.
- *
- * @param config The configuration object to be validated.
- * @throws {Error} A detailed error message if the validation fails.
- */
-export const validateReservationsEnv = (config: Record<string, unknown>) => {
-  try {
-    return reservationsEnvSchema.parse(config);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      const formattedErrors = error.errors
-        .map((err) => `${err.path.join('.')} : ${err.message}`)
-        .join('\n');
-
-      throw new Error(`Config validation failed:\n${formattedErrors}`);
-    }
-    throw error;
+  if (errors.length > 0) {
+    throw new Error(errors.toString());
   }
-};
+  return validatedConfig;
+}

@@ -14,16 +14,14 @@ export class AuthService {
     const tokenPayload = {
       userId: user._id.toHexString(),
     };
-    const jwtExpiresSec = new Date();
-    jwtExpiresSec.setSeconds(
-      jwtExpiresSec.getSeconds() +
-        Number(this.configService.get('JWT_EXPIRATION')),
-    );
+    const jwtExpiresOn = new Date();
+    const cookieDuration = this.configService.get('JWT_EXPIRATION') as number;
+    jwtExpiresOn.setSeconds(jwtExpiresOn.getSeconds() + cookieDuration);
 
     const token = this.jwtService.sign(tokenPayload);
     response.cookie('Authentication', token, {
       httpOnly: true,
-      expires: jwtExpiresSec,
+      expires: jwtExpiresOn,
     });
   }
 }
